@@ -2,7 +2,7 @@
 	"name": "solidjs-xterm-component",
 	"version": "0.0.1",
 	"description": "xterm.js terminal emulator component for SolidJS",
-	"module": "src/xterm.jsx",
+	"module": "xterm.jsx",
 	"scripts": {
 		"demo": "cd demo/src/src && npm install && npm run dev",
 		"format": "prettier . --write",
