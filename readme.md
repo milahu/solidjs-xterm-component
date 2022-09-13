@@ -2,20 +2,62 @@
 
 Terminal emulator for SolidJS
 
-# Demo
+## Usage
 
-TODO
+```jsx
+import { Xterm } from 'solidjs-xterm-component'
 
-[Live Demo](https://milahu.github.io/solidjs-xterm-component/demo/dist/).
+// note: install local-echo from github
+// pnpm i -D https://github.com/wavesoft/local-echo
+// https://github.com/wavesoft/local-echo/issues/55
+// TypeError: this.term.on is not a function
+import LocalEchoController from 'local-echo';
 
-To run the demo locally
+export function App() {
+  let terminal;
 
-```sh
-npm install
-npm run demo
+  function onLoadedXterm(_terminal) {
+    terminal = _terminal;
+
+    // colors
+    terminal.setOption("theme", {
+      background: "black",
+      foreground: "white",
+    });
+
+    // events
+    const localEcho = new LocalEchoController();
+    terminal.loadAddon(localEcho);
+    const promptString = '~ > ';
+    function readLine() {
+      // Read a single line from the user
+      localEcho.read(promptString)
+        .then(line => {
+          // TODO do something with line
+          console.log(`User entered line: ${line}`);
+          readLine(); // read next line
+        })
+        .catch(error => console.log(`Error reading line: ${error}`))
+      ;
+    }
+    readLine(); // start loop
+  }
+
+  return (
+    <div>
+      <Xterm onLoaded={onLoadedXterm} />
+    </div>
+  );
+}
 ```
 
-# Install
+## Docs
+
+* https://xtermjs.org/docs/
+* https://github.com/wavesoft/local-echo
+* https://github.com/xtermjs/xterm.js/blob/master/demo/client.ts
+
+## Install
 
 Not currently published to NPM, install from git for now by adding the following to your `dependencies` in `package.json`:
 
@@ -41,21 +83,15 @@ may need to configure your tool (f.e. [Webpack](https://webpack.js.org/) with
 `node_modules/solidjs-xterm-component` because those files are not
 plain JavaScript.
 
-# Usage
+## Demo
 
-```jsx
-import {Xterm} from 'solidjs-xterm-component'
+TODO
 
-export function App() {
-  let terminal;
-  function onLoadedXterm(_terminal) {
-    terminal = _terminal;
-    terminal.write('hello-world> ');
-  }
-  return (
-    <div>
-      <Xterm onLoaded={onLoadedXterm} />
-    </div>
-  );
-}
+[Live Demo](https://milahu.github.io/solidjs-xterm-component/demo/dist/)
+
+To run the demo locally
+
+```sh
+npm install
+npm run demo
 ```
