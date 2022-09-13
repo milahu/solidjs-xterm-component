@@ -1,4 +1,4 @@
-import { onMount } from "solid-js";
+import { onMount, onCleanup } from "solid-js";
 
 import { Terminal } from 'xterm';
 import "xterm/css/xterm.css";
@@ -12,6 +12,10 @@ export function Xterm(props) {
     terminal = new Terminal();
     terminal.open(ref);
     if (props.onLoaded) props.onLoaded(terminal);
+  });
+
+  onCleanup(() => {
+    terminal.clear();
   });
 
   return <div ref={ref} />
