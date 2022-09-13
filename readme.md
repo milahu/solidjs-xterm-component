@@ -46,9 +46,16 @@ plain JavaScript.
 ```jsx
 import {Xterm} from 'solidjs-xterm-component'
 
-export function App(props) {
-	return (
-		<Xterm/>
-	)
+export function App() {
+  let terminal;
+  function onLoadedXterm(_terminal) {
+    terminal = _terminal;
+    terminal.write('hello-world> ');
+  }
+  return (
+    <div>
+      <Xterm onLoaded={onLoadedXterm} />
+    </div>
+  );
 }
 ```
